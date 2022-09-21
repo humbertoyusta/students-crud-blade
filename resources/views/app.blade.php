@@ -13,6 +13,8 @@
 
     </head>
     <body>
+        <h1><span class="badge bg-secondary">Students</span></h1>
+
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="#">See all</a>
@@ -31,4 +33,6 @@
             </li>
         </ul>
     </body>
+
+    @yield('content')
 </html>
