@@ -10,7 +10,7 @@ class StudentsController extends Controller
     /**
      * Returns a list of students showing only name and email
      */
-    public function all() {
+    public function findAll() {
         $students = Student::all();
 
         return view('all/index', ['students' => $students]);
@@ -22,11 +22,11 @@ class StudentsController extends Controller
     public function add(Request $request) {
 
         $request->validate([
-            'firstname' => 'required|max:120',
-            'lastname' => 'required|max:120',
-            'email' => 'required|max:255',
-            'address' => 'required',
-            'score' => 'required'
+            'firstname' => 'required|max:120|min:1',
+            'lastname' => 'required|max:120|min:1',
+            'email' => 'required|max:255|min:3',
+            'address' => 'required|min:1',
+            'score' => 'required|min:0'
         ]);
 
         $student = new Student;
@@ -37,6 +37,6 @@ class StudentsController extends Controller
         $student->score = $request->score;
         $student->save();
 
-        return redirect()->route('add')->with('success', 'student added correctly');
+        return redirect()->route('student-add')->with('success', 'student added correctly');
     }
 }

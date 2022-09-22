@@ -13,23 +13,12 @@
 
     </head>
     <body>
-        <h1><span class="badge bg-secondary">Students</span></h1>
-
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">See all</a>
+                <a class="nav-link" aria-current="page" href="{{ route('all') }}">Students</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Add</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Edit</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Remove</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Find</a>
+                <a class="nav-link" href="{{ route('student-add') }}">Add</a>
             </li>
         </ul>
     </body>

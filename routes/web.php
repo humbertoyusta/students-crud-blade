@@ -14,10 +14,16 @@ use App\Http\Controllers\StudentsController;
 |
 */
 
-Route::get('/', [StudentsController::class, 'all']) -> name('all');
+Route::get('/', [StudentsController::class, 'findAll']) -> name('all');
 
-Route::get('/add', function () {
-    return view('add/index');
-}) -> name('add');
+Route::get('/student/{id}', [StudentsController::class, 'findOne']) -> name('student-find-one');
 
-Route::post('/add', [StudentsController::class, 'add']) -> name('add');
+Route::get('student', function () { return view('add/index'); }) -> name('student-add');
+
+Route::post('/student', [StudentsController::class, 'add']) -> name('student-add');
+
+Route::get('/student/{id}', function () { return view('edit/index'); }) -> name('student-edit');
+
+Route::patch('/student/{id}', [StudentsController::class, 'edit']) -> name('student-edit');
+
+Route::delete('/student/{id}', [StudentsController::class, 'delete']) -> name('student-delete');
