@@ -1,19 +1,37 @@
 @extends('app')
 
 @section('content')
-    <form>
+    <form action="{{ route('add') }}" method="POST">
+        @csrf
+
+        @if (session('success'))
+            <h5 class="alert alert-success">{{ session('success') }}</h5>
+        @endif
+
+        @error ('title')
+            <h5 class="alert alert-danger">{{ $message }}</h5>
+        @enderror
+        
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">First Name</label>
+            <input type="text" class="form-control" name="firstname" id="firstname" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="lastname" id="lastname" aria-describedby="emailHelp">
+        </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <label for="exampleInputEmail1" class="form-label">Address</label>
+            <input type="text" class="form-control" name="address" id="address" aria-describedby="emailHelp">
         </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Score</label>
+            <input type="number" step="0.01" name="score" class="form-control" id="score" aria-describedby="emailHelp">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
