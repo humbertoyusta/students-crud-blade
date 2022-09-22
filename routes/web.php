@@ -14,8 +14,10 @@ use App\Http\Controllers\StudentsController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', [StudentsController::class, 'all']) -> name('all');
+
+Route::get('/add', function () {
     return view('add/index');
-}) -> name('main');
+}) -> name('add');
 
 Route::post('/add', [StudentsController::class, 'add']) -> name('add');

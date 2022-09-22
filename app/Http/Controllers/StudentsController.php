@@ -8,6 +8,15 @@ use App\Models\Student;
 class StudentsController extends Controller
 {
     /**
+     * Returns a list of students showing only name and email
+     */
+    public function all() {
+        $students = Student::all();
+
+        return view('all/index', ['students' => $students]);
+    }
+
+    /**
      * Adds a new student
      */
     public function add(Request $request) {
@@ -28,6 +37,6 @@ class StudentsController extends Controller
         $student->score = $request->score;
         $student->save();
 
-        return redirect()->route('main')->with('success', 'student added correctly');
+        return redirect()->route('add')->with('success', 'student added correctly');
     }
 }
