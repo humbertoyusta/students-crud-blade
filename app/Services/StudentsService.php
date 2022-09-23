@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class StudentsService
 {
-    public function findOne($id): Student
+    public function findOne($id)
     {
         return Student::find($id);
     }
@@ -29,7 +29,7 @@ class StudentsService
         ]);
     }
 
-    public function add($studentDto): Student 
+    public function add($studentDto)
     {
         $this->validate($studentDto);
 
@@ -45,7 +45,7 @@ class StudentsService
         return $student;
     }
 
-    public function edit($id, Request $studentDto): Student
+    public function edit($id, Request $studentDto)
     {
         $this->validate($studentDto);
 
