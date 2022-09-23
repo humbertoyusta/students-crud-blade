@@ -9,7 +9,13 @@
                     {{ $student->email }}
                 </div>
                 <button type="button" class="btn btn-primary">See profile</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <div>
+                    <form action="{{ route('student-delete', [$student->id]) }}" method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
                 <a href="{{ route('student-edit', ['id' => $student->id]) }}" method="GET">
                     <button type="button" class="btn btn-warning">Edit</button>
                 </a>

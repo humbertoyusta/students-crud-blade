@@ -58,4 +58,11 @@ class StudentsController extends Controller
 
         return redirect()->route('student-edit', ['id' => $student->id, 'student' => $student])->with('success', 'student edited correctly');
     }
+
+    public function delete($id)
+    {
+        $this->studentsService->delete($id);
+
+        return redirect()->route('all')->with('success', 'student deleted successfuly');
+    }
 }

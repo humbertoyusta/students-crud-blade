@@ -58,4 +58,9 @@ class StudentsService
                 'score' => $studentDto->score
             ]) -> first();
     }
+
+    public function delete($id) 
+    {
+        return Student::destroy($id);
+    }
 }

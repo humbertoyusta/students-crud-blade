@@ -21,6 +21,14 @@
                 <a class="nav-link" href="{{ route('student-add') }}">Add</a>
             </li>
         </ul>
+
+        @if (session('success'))
+            <h5 class="alert alert-success">{{ session('success') }}</h5>
+        @endif
+
+        @foreach($errors->all() as $err)
+            <h5 class="alert alert-danger">{{ $err }}</h5>
+        @endforeach
     </body>
 
     @yield('content')
