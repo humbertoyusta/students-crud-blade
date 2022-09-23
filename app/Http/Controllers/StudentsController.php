@@ -10,6 +10,10 @@ class StudentsController extends Controller
 {
     private StudentsService $studentsService;
 
+    /**
+     * Constructor
+     * Injecting studentsService
+     */
     public function __construct(StudentsService $studentsService)
     {
         $this->studentsService = $studentsService;
@@ -18,15 +22,16 @@ class StudentsController extends Controller
     /**
      * Returns a list of students showing only name and email
      */
-    public function findAll() {
+    public function findAll() 
+    {
         return view('all/index', ['students' => $this->studentsService->findAll()]);
     }
 
     /**
      * Adds a new student
      */
-    public function add(Request $request) {
-
+    public function add(Request $request) 
+    {
         $this->studentsService->add($request);
 
         return redirect()->route('student-add')->with('success', 'student added correctly');

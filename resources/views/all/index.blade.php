@@ -10,7 +10,8 @@
                 </div>
                 <button type="button" class="btn btn-primary">See profile</button>
                 <button type="button" class="btn btn-danger">Delete</button>
-                <button type="button" class="btn btn-warning">Edit</button>
+                <button type="button" class="btn btn-warning"
+                    action="{{ route('student-edit', ['id' => $student->id]) }}" method="GET">Edit</button>
             </li>
         @endforeach
     </ol>

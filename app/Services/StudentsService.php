@@ -19,10 +19,10 @@ class StudentsService
     public function add($studentDto) 
     {
         $studentDto->validate([
-            'firstname' => 'required|max:120|min:1',
-            'lastname' => 'required|max:120|min:1',
-            'email' => 'required|max:255|min:3',
-            'address' => 'required|min:1',
+            'firstname' => 'required|max:120',
+            'lastname' => 'required|max:120',
+            'email' => 'required|max:255',
+            'address' => 'required',
             'score' => 'required|min:0'
         ]);
 
