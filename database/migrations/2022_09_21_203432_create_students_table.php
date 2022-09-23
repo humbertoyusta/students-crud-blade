@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('firstname', 120);
             $table->string('lastname', 120);
-            $table->string('email', 255);
+            $table->string('email', 255)->unique();
             $table->string('address');
             $table->float('score');
             $table->timestamps();
