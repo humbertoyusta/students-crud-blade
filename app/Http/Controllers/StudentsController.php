@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Services\StudentsService;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class StudentsController extends Controller
 {
@@ -42,9 +43,16 @@ class StudentsController extends Controller
      */
     public function add(Request $request) 
     {
-        $this->studentsService->add($request);
+        try 
+        {
+            $this->studentsService->add($request);
 
-        return redirect()->route('student-add')->with('success', 'student added correctly');
+            return redirect()->route('student-add')->with('success', 'student added correctly');
+        } 
+        catch(ConflictHttpException $err) 
+        {
+            return redirect()->route('student-add')->withErrors('there is another user with the same email');
+        }
     }
 
     /**

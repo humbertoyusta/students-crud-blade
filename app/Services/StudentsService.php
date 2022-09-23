@@ -5,12 +5,18 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class StudentsService
 {
     public function findOne($id)
     {
         return Student::find($id);
+    }
+
+    public function findOneByEmail($email)
+    {
+        return Student::where('email', $email)->first();
     }
 
     public function findAll()
@@ -32,6 +38,11 @@ class StudentsService
     public function add($studentDto)
     {
         $this->validate($studentDto);
+
+        if ($this->findOneByEmail($studentDto->email))
+        {
+            throw new ConflictHttpException();
+        }
 
         $student = new Student([
             'firstname' => $studentDto->firstname,
