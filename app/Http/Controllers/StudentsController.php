@@ -29,7 +29,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * @return a student
+     * @return a view with student's data
      * @param id
      */
     public function show($id)
@@ -71,9 +71,16 @@ class StudentsController extends Controller
      */
     public function edit(Request $request, $id)
     {
-        $student = $this->studentsService->edit($id, $request);
+        try 
+        {
+            $student = $this->studentsService->edit($id, $request);
 
-        return redirect()->route('student-edit', ['id' => $student->id, 'student' => $student])->with('success', 'student edited correctly');
+            return redirect()->route('student-edit', ['id' => $student->id, 'student' => $student])->with('success', 'student edited correctly');
+        } 
+        catch(ConflictHttpException $err) 
+        {
+            return redirect()->route('student-edit', ['id' => $request->id, 'student' => $request])->withErrors('there is another user with the new email');
+        }
     }
 
     public function delete($id)
