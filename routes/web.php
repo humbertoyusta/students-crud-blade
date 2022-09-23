@@ -16,14 +16,14 @@ use App\Http\Controllers\StudentsController;
 
 Route::get('/', [StudentsController::class, 'findAll']) -> name('all');
 
-Route::get('/student/{id}', [StudentsController::class, 'findOne']) -> name('student-find-one');
+Route::get('/student/{id}', [StudentsController::class, 'show']) -> name('student-show');
 
 Route::get('student', function () { return view('add/index'); }) -> name('student-add');
 
 Route::post('/student', [StudentsController::class, 'add']) -> name('student-add');
 
-Route::get('/student/{id}', [StudentsController::class, 'getEdit']) -> name('student-edit');
+Route::get('/student/edit/{id}', [StudentsController::class, 'getEdit']) -> name('student-edit');
 
-Route::patch('/student/{id}', [StudentsController::class, 'edit']) -> name('student-edit');
+Route::patch('/student/edit/{id}', [StudentsController::class, 'edit']) -> name('student-edit');
 
 Route::delete('/student/{id}', [StudentsController::class, 'delete']) -> name('student-delete');

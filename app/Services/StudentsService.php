@@ -29,7 +29,7 @@ class StudentsService
         ]);
     }
 
-    public function add($studentDto) 
+    public function add($studentDto): Student 
     {
         $this->validate($studentDto);
 
@@ -45,7 +45,7 @@ class StudentsService
         return $student;
     }
 
-    public function edit($id, Request $studentDto)
+    public function edit($id, Request $studentDto): Student
     {
         $this->validate($studentDto);
 
@@ -59,7 +59,7 @@ class StudentsService
             ]) -> first();
     }
 
-    public function delete($id) 
+    public function delete($id)
     {
         return Student::destroy($id);
     }

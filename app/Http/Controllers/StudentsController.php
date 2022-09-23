@@ -28,6 +28,15 @@ class StudentsController extends Controller
     }
 
     /**
+     * @return a student
+     * @param id
+     */
+    public function show($id)
+    {
+        return view('show/index', ['student' => $this->studentsService->findOne($id)]);
+    }
+
+    /**
      * Adds a new student
      * @param $request - a request containing all data of a student
      */

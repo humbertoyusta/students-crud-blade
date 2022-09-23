@@ -8,7 +8,9 @@
                     <div class="fw-bold">{{ $student->firstname }} {{ $student->lastname }}</div>
                     {{ $student->email }}
                 </div>
-                <button type="button" class="btn btn-primary">See profile</button>
+                <a href="{{ route('student-show', [$student->id]) }}" method="GET">
+                    <button type="button" class="btn btn-primary">See profile</button>
+                </a>
                 <div>
                     <form action="{{ route('student-delete', [$student->id]) }}" method="POST">
                         @method('DELETE')
