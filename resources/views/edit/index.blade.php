@@ -4,14 +4,6 @@
     <form name="form" id="form" action="{{ route('student-edit', ['id' => $student->id]) }}" method="POST">
         @csrf
         @method('PATCH')
-
-        @if (session('success'))
-            <h5 class="alert alert-success">{{ session('success') }}</h5>
-        @endif
-
-        @foreach($errors->all() as $err)
-            <h5 class="alert alert-danger">{{ $err }}</h5>
-        @endforeach
         
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">First Name</label>

@@ -3,14 +3,6 @@
 @section('content')
     <form name="form" id="form" action="{{ route('student-add') }}" method="POST">
         @csrf
-
-        @if (session('success'))
-            <h5 class="alert alert-success">{{ session('success') }}</h5>
-        @endif
-
-        @foreach($errors->all() as $err)
-            <h5 class="alert alert-danger">{{ $err }}</h5>
-        @endforeach
         
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">First Name</label>
