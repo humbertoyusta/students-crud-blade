@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Illuminate\Support\Facades\DB;
@@ -47,8 +48,17 @@ class StudentsService
             'lastname' => 'required|max:120',
             'email' => 'required|max:255',
             'address' => 'required',
-            'score' => 'required|min:0'
+            'score' => 'required|min:0',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
         ]);
+    }
+
+    private function storeImage($studentDto)
+    {
+        $file= $studentDto->file('image');
+        $filename= date('YmdHi').$file->getClientOriginalName();
+        $file-> move(public_path('images'), $filename);
+        return $filename;
     }
 
     /**
@@ -71,7 +81,8 @@ class StudentsService
             'lastname' => $studentDto->lastname,
             'email' => $studentDto->email,
             'address' => $studentDto->address,
-            'score' => $studentDto->score
+            'score' => $studentDto->score,
+            'image' => $this->storeImage($studentDto)
         ]);
 
         $student -> save();
@@ -91,23 +102,34 @@ class StudentsService
 
         $this->validate($studentDto);
 
-        if ($this->findOneByEmail($studentDto->email))
+        $studentWithSameEmail = $this->findOneByEmail($studentDto->email);
+        if ($studentWithSameEmail && $studentWithSameEmail->id != $id)
         {
             throw new ConflictHttpException();
         }
 
-        return tap(DB::table('students')->where("id", $id)) -> 
-            update([
-                'firstname' => $studentDto->firstname,
-                'lastname' => $studentDto->lastname,
-                'email' => $studentDto->email,
-                'address' => $studentDto->address,
-                'score' => $studentDto->score
-            ]) -> first();
+        $student = $this->findOne($id);
+
+        unlink(public_path().'/images/'.$student->image);
+
+        $student->update([
+            'firstname' => $studentDto->firstname,
+            'lastname' => $studentDto->lastname,
+            'email' => $studentDto->email,
+            'address' => $studentDto->address,
+            'score' => $studentDto->score,
+            'image' => $this->storeImage($studentDto)
+        ]);
+
+        return $this->findOne($id);
     }
 
     public function delete($id)
     {
-        return Student::destroy($id);
+        $student = Student::find($id);
+
+        unlink(public_path().'/images/'.$student->image);
+
+        return $student->delete();
     }
 }

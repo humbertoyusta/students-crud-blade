@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-    <form name="form" id="form" action="{{ route('student-add') }}" method="POST">
+    <form name="form" id="form" action="{{ route('student-add') }}" method="POST" enctype="multipart/form-data">
         @csrf
         
         <div class="mb-3">
@@ -16,6 +16,10 @@
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp">
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        </div>
+        <div class="image">
+            <label><h4>Add image</h4></label>
+            <input type="file" class="form-control" id="image" required name="image">
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Address</label>
