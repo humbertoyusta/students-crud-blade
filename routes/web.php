@@ -22,7 +22,7 @@ Route::get('student', function () { return view('add/index'); }) -> name('studen
 
 Route::post('/student', [StudentsController::class, 'add']) -> name('student-add');
 
-Route::get('/student/{id}', function () { return view('edit/index'); }) -> name('student-edit');
+Route::get('/student/{id}', [StudentsController::class, 'getEdit']) -> name('student-edit');
 
 Route::patch('/student/{id}', [StudentsController::class, 'edit']) -> name('student-edit');
 

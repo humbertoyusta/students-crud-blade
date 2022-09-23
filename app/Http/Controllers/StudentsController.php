@@ -20,7 +20,7 @@ class StudentsController extends Controller
     }
 
     /**
-     * Returns a list of students showing only name and email
+     * @return a list of students
      */
     public function findAll() 
     {
@@ -29,11 +29,33 @@ class StudentsController extends Controller
 
     /**
      * Adds a new student
+     * @param $request - a request containing all data of a student
      */
     public function add(Request $request) 
     {
         $this->studentsService->add($request);
 
         return redirect()->route('student-add')->with('success', 'student added correctly');
+    }
+
+    /**
+     * @return the view that allows to edit the student
+     * @param $id - id of student to edit
+     */
+    public function getEdit($id)
+    {
+        return view('edit/index', ['student' => $this->studentsService->findOne($id)]);
+    }
+
+    /**
+     * Edits a student
+     * @redirects to the same edit view with a success message or an error
+     * @param $request - a request containing the new data of the student
+     */
+    public function edit(Request $request, $id)
+    {
+        $student = $this->studentsService->edit($id, $request);
+
+        return redirect()->route('student-edit', ['id' => $student->id, 'student' => $student])->with('success', 'student edited correctly');
     }
 }
