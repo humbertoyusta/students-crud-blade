@@ -124,6 +124,10 @@ class StudentsService
         return $this->findOne($id);
     }
 
+    /**
+     * deletes a student
+     * @param $id
+     */
     public function delete($id)
     {
         $student = Student::find($id);
