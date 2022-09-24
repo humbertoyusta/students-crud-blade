@@ -18,7 +18,7 @@ Route::get('/', [StudentsController::class, 'findAll']) -> name('all');
 
 Route::get('/student/{id}', [StudentsController::class, 'show']) -> name('student-show');
 
-Route::get('student', function () { return view('add/index'); }) -> name('student-add');
+Route::get('/student', function () { return view('add/index'); }) -> name('student-add');
 
 Route::post('/student', [StudentsController::class, 'add']) -> name('student-add');
 

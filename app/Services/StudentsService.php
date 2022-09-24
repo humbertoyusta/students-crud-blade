@@ -2,10 +2,8 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Student;
-use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 
 class StudentsService
@@ -53,6 +51,11 @@ class StudentsService
         ]);
     }
 
+    /**
+     * internal private function to store an image
+     * @param studentDto -- with all the data of the student
+     * @return the filenime after app/public/images
+     */
     private function storeImage($studentDto)
     {
         $file= $studentDto->file('image');
