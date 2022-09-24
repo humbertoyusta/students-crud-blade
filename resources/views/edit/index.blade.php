@@ -20,7 +20,7 @@
         </div>
         <div class="image">
             <label><h4>Add image</h4></label>
-            <input type="file" class="form-control" id="image" required name="image">
+            <input type="file" class="form-control" id="image" name="image">
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Address</label>

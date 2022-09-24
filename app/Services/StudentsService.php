@@ -37,9 +37,10 @@ class StudentsService
     /**
      * internal private function to validate a student before adding to the database
      * @param $studentDto -- with all the data of the student
+     * @param $isImageRequired -- a bool set to true if image is required
      * @throws a validation errror if validation fails
      */
-    private function validate($studentDto)
+    private function validate($studentDto, $isImageRequired)
     {
         $studentDto->validate([
             'firstname' => 'required|max:120',
@@ -47,8 +48,11 @@ class StudentsService
             'email' => 'required|max:255',
             'address' => 'required',
             'score' => 'required|min:0',
-            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048'
+            'image' => 'image|mimes:png,jpg,jpeg|max:2048'
         ]);
+
+        if ($isImageRequired)
+            $studentDto->validate(['image' => 'required']);
     }
 
     /**
@@ -72,7 +76,7 @@ class StudentsService
      */
     public function add($studentDto)
     {
-        $this->validate($studentDto);
+        $this->validate($studentDto, 1);
 
         if ($this->findOneByEmail($studentDto->email))
         {
@@ -103,7 +107,7 @@ class StudentsService
     {
         assert($id === $studentDto->id);
 
-        $this->validate($studentDto);
+        $this->validate($studentDto, 0);
 
         $studentWithSameEmail = $this->findOneByEmail($studentDto->email);
         if ($studentWithSameEmail && $studentWithSameEmail->id != $id)
@@ -113,16 +117,29 @@ class StudentsService
 
         $student = $this->findOne($id);
 
-        unlink(public_path().'/images/'.$student->image);
+        if ($studentDto->image)
+        {
+            unlink(public_path().'/images/'.$student->image);
 
-        $student->update([
-            'firstname' => $studentDto->firstname,
-            'lastname' => $studentDto->lastname,
-            'email' => $studentDto->email,
-            'address' => $studentDto->address,
-            'score' => $studentDto->score,
-            'image' => $this->storeImage($studentDto)
-        ]);
+            $student->update([
+                'firstname' => $studentDto->firstname,
+                'lastname' => $studentDto->lastname,
+                'email' => $studentDto->email,
+                'address' => $studentDto->address,
+                'score' => $studentDto->score,
+                'image' => $this->storeImage($studentDto)
+            ]);
+        }
+        else
+        {
+            $student->update([
+                'firstname' => $studentDto->firstname,
+                'lastname' => $studentDto->lastname,
+                'email' => $studentDto->email,
+                'address' => $studentDto->address,
+                'score' => $studentDto->score
+            ]);
+        }
 
         return $this->findOne($id);
     }
