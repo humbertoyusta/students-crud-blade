@@ -32,6 +32,12 @@ return new class extends Migration
      */
     public function down()
     {
+        $files = glob(public_path().'/images/*'); // get all file names
+        foreach($files as $file){ // iterate files
+            if(is_file($file)) {
+                unlink($file); // delete file
+            }
+        }
         Schema::dropIfExists('students');
     }
 };
