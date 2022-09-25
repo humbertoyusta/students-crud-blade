@@ -155,7 +155,8 @@ class StudentsService
     {
         $student = Student::find($id);
 
-        unlink(public_path().'/images/'.$student->image);
+        if ($student->image != null)
+            unlink(public_path().'/images/'.$student->image);
 
         return $student->delete();
     }
