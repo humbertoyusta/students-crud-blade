@@ -76,7 +76,7 @@ class StudentsService
      */
     public function add($studentDto)
     {
-        $this->validate($studentDto, 1);
+        $this->validate($studentDto, ($studentDto->image != null));
 
         if ($this->findOneByEmail($studentDto->email))
         {
@@ -89,8 +89,10 @@ class StudentsService
             'email' => $studentDto->email,
             'address' => $studentDto->address,
             'score' => $studentDto->score,
-            'image' => $this->storeImage($studentDto)
         ]);
+
+        if ($studentDto->image != null)
+            $student -> image = $this->storeImage($studentDto);
 
         $student -> save();
         return $student;
@@ -119,7 +121,8 @@ class StudentsService
 
         if ($studentDto->image)
         {
-            unlink(public_path().'/images/'.$student->image);
+            if ($student->image != null)
+                unlink(public_path().'/images/'.$student->image);
 
             $student->update([
                 'firstname' => $studentDto->firstname,
