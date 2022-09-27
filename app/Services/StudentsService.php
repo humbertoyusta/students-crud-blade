@@ -5,6 +5,7 @@ namespace App\Services;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use Illuminate\Support\Facades\Storage;
 
 class StudentsService
 {
@@ -40,7 +41,7 @@ class StudentsService
      * @param $isImageRequired -- a bool set to true if image is required
      * @throws a validation errror if validation fails
      */
-    private function validate($studentDto, $isImageRequired)
+    private function validate($studentDto)
     {
         $studentDto->validate([
             'firstname' => 'required|max:120',
@@ -50,22 +51,6 @@ class StudentsService
             'score' => 'required|min:0',
             'image' => 'image|mimes:png,jpg,jpeg|max:2048'
         ]);
-
-        if ($isImageRequired)
-            $studentDto->validate(['image' => 'required']);
-    }
-
-    /**
-     * internal private function to store an image
-     * @param studentDto -- with all the data of the student
-     * @return the filenime after app/public/images
-     */
-    private function storeImage($studentDto)
-    {
-        $file= $studentDto->file('image');
-        $filename= date('YmdHi').$file->getClientOriginalName();
-        $file-> move(public_path('images'), $filename);
-        return $filename;
     }
 
     /**
@@ -76,7 +61,7 @@ class StudentsService
      */
     public function add($studentDto)
     {
-        $this->validate($studentDto, ($studentDto->image != null));
+        $this->validate($studentDto);
 
         if ($this->findOneByEmail($studentDto->email))
         {
@@ -92,7 +77,7 @@ class StudentsService
         ]);
 
         if ($studentDto->image != null)
-            $student -> image = $this->storeImage($studentDto);
+            $student -> image = $studentDto -> file('image') -> store('images', 'public');
 
         $student -> save();
         return $student;
@@ -109,7 +94,7 @@ class StudentsService
     {
         assert($id === $studentDto->id);
 
-        $this->validate($studentDto, 0);
+        $this->validate($studentDto);
 
         $studentWithSameEmail = $this->findOneByEmail($studentDto->email);
         if ($studentWithSameEmail && $studentWithSameEmail->id != $id)
@@ -119,28 +104,21 @@ class StudentsService
 
         $student = $this->findOne($id);
 
-        if ($studentDto->image)
+        $student->update([
+            'firstname' => $studentDto->firstname,
+            'lastname' => $studentDto->lastname,
+            'email' => $studentDto->email,
+            'address' => $studentDto->address,
+            'score' => $studentDto->score,
+        ]);
+
+        if ($studentDto->image != null)
         {
-            if ($student->image != null)
-                unlink(public_path().'/images/'.$student->image);
+            if ($student -> image != null)
+                Storage::delete('public/'.$student->image);
 
             $student->update([
-                'firstname' => $studentDto->firstname,
-                'lastname' => $studentDto->lastname,
-                'email' => $studentDto->email,
-                'address' => $studentDto->address,
-                'score' => $studentDto->score,
-                'image' => $this->storeImage($studentDto)
-            ]);
-        }
-        else
-        {
-            $student->update([
-                'firstname' => $studentDto->firstname,
-                'lastname' => $studentDto->lastname,
-                'email' => $studentDto->email,
-                'address' => $studentDto->address,
-                'score' => $studentDto->score
+                'image' => $studentDto -> file('image') -> store('images', 'public'),
             ]);
         }
 
@@ -156,7 +134,7 @@ class StudentsService
         $student = Student::find($id);
 
         if ($student->image != null)
-            unlink(public_path().'/images/'.$student->image);
+            Storage::delete('public/'.$student->image);
 
         return $student->delete();
     }
